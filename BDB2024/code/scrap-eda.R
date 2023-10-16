@@ -24,3 +24,10 @@ head(tackles_play)
 
 #convert characters to factors
 
+tackles_play <- as.data.frame(unclass(tackles_play), 
+                              stringsAsFactors = TRUE)
+
+#turn IDs to Factors
+#gameId, playId, nflId, ballcarrierId, foulNFLId1, foulNFLId3
+#then create a unique ID
+#df$ID <- as.factor(paste0(df$gameId, '-', df$playId, '-', df$nflId))
