@@ -31,3 +31,15 @@ tackles_play <- as.data.frame(unclass(tackles_play),
 #gameId, playId, nflId, ballcarrierId, foulNFLId1, foulNFLId3
 #then create a unique ID
 #df$ID <- as.factor(paste0(df$gameId, '-', df$playId, '-', df$nflId))
+
+tackles_play$gameId <- as.factor(tackles_play$gameId)
+tackles_play$playId <- as.factor(tackles_play$playId)
+tackles_play$nflId <- as.factor(tackles_play$nflId)
+tackles_play$ballCarrierId <- as.factor(tackles_play$ballCarrierId)
+tackles_play$foulNFLId1 <- as.factor(tackles_play$foulNFLId1)
+tackles_play$foulNFLId2 <- as.factor(tackles_play$foulNFLId2)
+
+tackles_play$ID <- as.factor(paste0(tackles_play$gameId, '-', tackles_play$playId, '-',
+                                    tackles_play$nflId))
+
+View(tackles_play)
