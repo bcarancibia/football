@@ -1,7 +1,7 @@
 library(tidyverse)
 library(gt)
 library(gtExtras)
-setwd(dir = "BDB2024/")
+setwd(dir = "~/football/BDB2024/")
 
 players <- read.csv(file = "data/players.csv")
 games <- read.csv(file = "data/games.csv")
@@ -43,3 +43,36 @@ tackles_play$ID <- as.factor(paste0(tackles_play$gameId, '-', tackles_play$playI
                                     tackles_play$nflId))
 
 View(tackles_play)
+
+# select just one game to look at
+# 	2022090800
+
+random_game <- tackles_play %>%
+  filter(gameId == "2022090800")
+
+#hard to map WP to missed tackles and teams
+# take it in steps
+
+#look at missed tackles and how many yards to go and play type
+
+tackles_play_missed <- tackles_play %>%
+  filter(pff_missedTackle != 0)
+
+tackles_play_missed <- tackles_play_missed %>%
+  mutate(playtype = ifelse(passResult == "", "Run", "Pass"))
+
+#plot it
+ggplot(tackles_play_missed, aes(x=playtype, fill = )) +
+  geom_bar()
+
+ggplot(tackles_play_missed, aes(yardsToGo, fill = playtype)) + 
+  geom_histogram()
+
+
+#wild outliers in this chart
+ggplot(tackles_play_missed, aes(x= yardsToGo, y=playResult, color = playtype)) + 
+  geom_point() 
+
+
+
+
