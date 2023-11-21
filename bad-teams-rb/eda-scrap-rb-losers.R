@@ -22,13 +22,15 @@ rb_snap_counts
 unique(rb_snap_counts$team)
 
 #https://www.nfl.com/standings/league/2022/reg
-rb_snap_counts <- rb_snap_counts %>% 
+rb_snap_counts <- rb_snap_counts |> 
   filter(team %in% c("CHI", "HOU", "ARI", 
                      "IND", "DEN", "LA", 
                      "LV", "ATL", "CAR",
                      "CLE", "NO", "NYJ",
                      "TEN", "GB", "NE",
-                     "TB", "WAS"))
+                     "TB", "WAS")) |> 
+  filter(offense_pct != 0.00) |> 
+  filter(week != 19)
 
 
 test_plot <- rb_snap_counts %>% 
@@ -40,3 +42,26 @@ ggplot(test_plot, aes(x = week, y = offense_pct, fill = player)) +
 ggplot(rb_snap_counts, aes(x = player, y = offense_pct, fill = team)) + 
   geom_bar(stat="identity") +
   facet_wrap(~ week)
+
+
+#chart difference from week to week
+
+test_counts_diff <- rb_snap_counts |> 
+  group_by(player) |> 
+  filter(team %in% "GB") |> 
+  mutate(diff = offense_pct - lag(offense_pct))
+
+ggplot(test_counts_diff, aes(x = week, y = diff, fill = player)) +
+  geom_bar(stat = "identity")
+
+
+rb_snap_counts_diff <- rb_snap_counts |> 
+  group_by(player) |> 
+  mutate(diff = offense_pct - lag(offense_pct))
+
+ggplot(rb_snap_counts_diff, aes(x = player, y = diff, fill = team)) + 
+  geom_bar(stat="identity") +
+  facet_wrap(~ week)
+
+  
+  
